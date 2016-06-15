@@ -6,7 +6,7 @@ var urlencodedParser=bodyParser.urlencoded( { extended: false } );
 var pg=require('pg');
 // user to connect to the "introToSQL" table on local host
 // postgres must be running and you must have this db name correct
-var connectionString = 'postgres://localhost:5432/introToSQL';
+var connectionString = 'postgres://localhost:5432/users';
 
 // static public folder
 app.use( express.static( 'public' ) );
@@ -44,6 +44,13 @@ app.get( '/getUsers', function( req, res ){
       return res.json( results );
     });
   }); // end connect
+});
+
+app.get('/deactivateUser', function(req,res){
+  pg.connect( connectionString, function( err, client, done ){
+    client.query("UPDATE users SET active=false WHERE active=true AND id=2;");
+
+  });
 });
 
 // spin up server
