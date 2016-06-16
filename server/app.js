@@ -33,7 +33,7 @@ app.get( '/getUsers', function( req, res ){
   var results =[];
   pg.connect( connectionString, function( err, client, done ){
     // get all user records and store in "query" variable
-    var query = client.query( 'SELECT * FROM users WHERE active=true ORDER BY id DESC;' );
+    var query = client.query( 'SELECT * FROM users ORDER BY id DESC;' );
     console.log( "query: " + query );
     // push each row in query into our results array
     var rows = 0;
@@ -46,9 +46,11 @@ app.get( '/getUsers', function( req, res ){
   }); // end connect
 });
 
-app.get('/deactivateUser', function(req,res){
-  pg.connect( connectionString, function( err, client, done ){
-    client.query("UPDATE users SET active=false WHERE active=true AND id=2;");
+app.post('/deactivateUser',urlencodedParser, function(req,res){
+  pg.connect( connectionString, function(err, client, done){
+    console.log(req.body);
+    var id = req.body.id;
+    client.query('UPDATE users SET active=false WHERE active=true AND id='+id+';');
 
   });
 });

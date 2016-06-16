@@ -16,7 +16,7 @@ $( document ).ready( function(){
   }); // end addbutton
 
   $('#getUsers').on('click', function(){
-    // $('#outputDiv').children().remove();
+    $('#outputDiv').children().remove();
     $.ajax({
       type: 'GET',
       url: '/getUsers',
@@ -31,20 +31,22 @@ $( document ).ready( function(){
     {
       var userOut = "<p>" + users[ i ].username + ", active: " + users[ i ].active + " created: " + users[ i ].created + "</p>";
       $('#outputDiv').append( userOut );
-      var userButton = "<button class='deactivate' data-id='" + users[ i ].id + "'>Deactivate " + users[ i ].username + "</button>";
+      var userButton = "<button class='deactivate btn' data-id='" + users[ i ].id + "'>Deactivate " + users[ i ].username + "</button>";
       $('#outputDiv').append( userButton );
 
     } // end for loop
     $('.deactivate').on('click', function(){
-      console.log('deactivating button');
-      var getID = $(this).attr('data-id');
+      console.log('deactivating user');
+      var getID = {
+          "id" : $(this).attr('data-id')
+      };
 
       $.ajax({
-        type: 'GET',
+        type: 'POST',
         url: '/deactivateUser',
-        data: getID.toString,
+        data: getID,
         success: function( data ){
-          // deactivateUser ();
+          console.log(data);// deactivateUser ();
         } // end success
       }); //end ajax
 
